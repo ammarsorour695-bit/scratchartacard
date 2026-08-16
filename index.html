@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scratch Art Card</title>
+<title>Scratch Art Cards — Blackboard Edition</title>
 <style>
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
@@ -12,11 +12,12 @@
     color:#111;
     background:#ffffff radial-gradient(#00000010 1px,transparent 1.5px);
     background-size:22px 22px;
+    overflow-x:hidden;
   }
   .hide{display:none !important}
   svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-  
+  /* ============ MENU ============ */
   #menu{max-width:1100px;margin:0 auto;position:relative;padding:18px 16px 30px}
   .menu-head{text-align:center;margin:4px 0 24px}
   h1{font-size:clamp(30px,5vw,54px);margin:0;letter-spacing:3px}
@@ -30,7 +31,7 @@
     margin:16px auto 0;
   }
 
-  
+  /* ---- carousel ---- */
   .carousel{display:flex;align-items:center;gap:14px}
   .navArrow{
     width:48px;height:70px;border:3px solid #111;border-radius:14px;background:#fff;color:#111;
@@ -70,7 +71,7 @@
   }
   .lvl:hover::after{transform:scaleX(1)}
 
-  
+  /* ---- bottom: nav bar + controls beneath ---- */
   .bottomArea{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:14px}
   .navBar{
     display:flex;align-items:center;background:#111;border-radius:999px;
@@ -95,7 +96,7 @@
   .iconBtn:hover{transform:translateY(-2px)}
   .iconBtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #111}
 
-  
+  /* ============ GAME ============ */
   #game{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:14px;background:#f2f2f2}
   #topbar{width:min(96vw,900px);display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
   .btn{
@@ -113,28 +114,46 @@
 
   .card{
     padding:10px;border-radius:16px;
+    width:min(96vw,900px);
     background:linear-gradient(135deg,#ff004c,#ff7a00,#ffe600,#00d26a,#00cfff,#7a5cff,#ff4fd8);
     box-shadow:0 14px 34px rgba(0,0,0,.35);
   }
   .board{padding:9px;border-radius:10px;background:linear-gradient(#a06a35,#7d4e1f)}
   .stack{position:relative;border-radius:6px;overflow:hidden}
-  .stack canvas{display:block;width:min(90vw,860px);height:auto}
+  .stack canvas{display:block;width:100%;height:auto}
   #bottom{position:absolute;inset:0}
   #scratch{position:relative;cursor:none;touch-action:none}
   .stack.nopick #scratch{cursor:crosshair}
-  .tip{margin-top:12px;font-size:14px;color:#444}
+  .tip{margin-top:12px;font-size:14px;color:#444;text-align:center}
 
-  
+  /* ---- tip size slider under the board ---- */
   .sizeWrap{
     margin-top:12px;display:flex;align-items:center;gap:12px;
     background:#fff;border:3px solid #111;border-radius:999px;box-shadow:4px 4px 0 #111;
-    padding:9px 18px;
+    padding:9px 18px;max-width:96vw;
   }
   .sizeWrap label{font-weight:bold;font-size:14px;white-space:nowrap}
   .sizeWrap input[type=range]{width:min(52vw,300px);accent-color:#111;cursor:pointer}
   #sizeVal{font-weight:bold;min-width:46px;text-align:right}
 
-  
+  /* ---- small screens ---- */
+  @media (max-width:640px){
+    #game{padding:10px}
+    #topbar{gap:8px}
+    .btn{padding:7px 10px;font-size:14px}
+    .progressWrap{flex-basis:100%;order:10;min-width:0}
+    #pct{order:11}
+    #levelTitle{font-size:16px}
+    .navArrow{width:40px;height:56px}
+    .track{gap:24px}
+    .tip{font-size:12px}
+    .sizeWrap{padding:8px 14px;gap:8px}
+    .sizeWrap input[type=range]{width:44vw}
+    .barCtrls{gap:8px}
+    .iconBtn{width:40px;height:40px}
+  }
+
+  /* ============ TOOTHPICK ============ */
   #tooth{position:absolute;left:0;top:0;z-index:9;pointer-events:none;opacity:0;transition:opacity .15s}
   #tooth.show{opacity:1}
   #toothIn{transform:rotate(var(--tilt,24deg));transform-origin:50% 97%}
@@ -144,7 +163,7 @@
     50%{transform:rotate(calc(var(--tilt,24deg) + 7deg))}
   }
 
-  
+  /* ============ MODALS ============ */
   .modal{position:fixed;inset:0;background:rgba(255,255,255,.78);display:flex;align-items:center;justify-content:center;z-index:60}
   .modalBox{background:#fff;border:3px solid #111;border-radius:16px;box-shadow:8px 8px 0 #111;padding:22px 26px;width:min(92vw,440px)}
   .mHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
@@ -159,19 +178,11 @@
   .steps li{display:flex;gap:12px;align-items:flex-start;margin:13px 0;font-size:14px;line-height:1.45}
   .steps .n{flex:0 0 26px;height:26px;border:2px solid #111;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px}
   .note{font-size:12px;color:#555;border-top:2px dashed #bbb;margin-top:14px;padding-top:10px}
-
-  
-  #win{position:fixed;inset:0;background:rgba(255,255,255,.82);display:flex;align-items:center;justify-content:center;z-index:50}
-  .winBox{background:#fff;border:4px solid #111;border-radius:18px;box-shadow:10px 10px 0 #111;padding:30px 44px;text-align:center;max-width:90vw}
-  .winBox h2{margin:0 0 6px;font-size:30px;display:flex;align-items:center;justify-content:center;gap:12px}
-  .winBox h2 svg{width:26px;height:26px;fill:#111;stroke:#111}
-  .winBox p{margin:0 0 18px;color:#333}
-  .winBtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
-
+<!-- ================= MENU ================= -->
 <div id="menu">
   <header class="menu-head">
     <h1>SCRATCH ART</h1>
@@ -205,7 +216,7 @@
   </div>
 </div>
 
-
+<!-- ================= GAME ================= -->
 <div id="game" class="hide">
   <div id="topbar">
     <button class="btn" id="backBtn">
@@ -234,7 +245,7 @@
     </div></div>
   </div></div></div>
 
-  <div class="tip">Hold &amp; drag the toothpick inside the chalk outlines. Scratching only reveals inside the drawing.</div>
+  <div class="tip">Hold &amp; drag the toothpick inside the chalk outlines. Only the main drawing is colorable.</div>
 
   <div class="sizeWrap">
     <label for="sizeRange">Tip size</label>
@@ -243,28 +254,7 @@
   </div>
 </div>
 
-
-<div id="win" class="hide">
-  <div class="winBox">
-    <h2>
-      <svg class="ic" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      Level Complete
-      <svg class="ic" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    </h2>
-    <p>You scratched the whole picture.</p>
-    <div class="winBtns">
-      <button class="btn" id="nextLevelBtn">Next Level
-        <svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-      <button class="btn" id="replayBtn">
-        <svg class="ic" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Replay
-      </button>
-      <button class="btn" id="menuBtn">Menu</button>
-    </div>
-  </div>
-</div>
-
-
+<!-- ================= SETTINGS ================= -->
 <div id="settings" class="modal hide">
   <div class="modalBox">
     <div class="mHead">
@@ -297,7 +287,7 @@
   </div>
 </div>
 
-
+<!-- ================= INFO ================= -->
 <div id="info" class="modal hide">
   <div class="modalBox">
     <div class="mHead">
@@ -309,16 +299,18 @@
     <ul class="steps">
       <li><span class="n">1</span> Pick a level from the menu. Use the arrows or the bottom bar to browse.</li>
       <li><span class="n">2</span> Hold and drag the toothpick over the blackboard to scratch it away.</li>
-      <li><span class="n">3</span> You can only reveal inside the drawing, so you can never color outside the lines.</li>
+      <li><span class="n">3</span> Only the main drawing is colorable. The border flowers and stars are decoration and stay uncolorable.</li>
       <li><span class="n">4</span> Use the tip size slider under the board: small for tiny parts, big to fill fast.</li>
-      <li><span class="n">5</span> Fill about 70% of the drawing to complete the level.</li>
+      <li><span class="n">5</span> The rainbow bar at the top shows how much you revealed. No pop-ups — scratch as much as you like.</li>
     </ul>
     <div class="note">Use the speaker icon to mute the scratch sound, and the gear icon for tip presets, chalk guide, no toothpick and toothpick tilt.</div>
   </div>
 </div>
 
 <script>
-
+/* ============================================================
+   SCRATCH ART CARDS — blackboard edition
+============================================================ */
 const W=960,H=640,TAU=Math.PI*2;
 const bottomC=document.getElementById('bottom');
 const scratchC=document.getElementById('scratch');
@@ -328,7 +320,6 @@ const stack=document.getElementById('stack');
 const tooth=document.getElementById('tooth');
 const menuEl=document.getElementById('menu');
 const gameEl=document.getElementById('game');
-const winEl=document.getElementById('win');
 const setEl=document.getElementById('settings');
 const infoEl=document.getElementById('info');
 
@@ -341,7 +332,7 @@ const ectx=eraseC.getContext('2d');
 
 const settings={px:14,guide:true,notooth:false,tilt:'right'};
 
-let cur=0,scratching=false,last=null,done=false,soundOn=true;
+let cur=0,scratching=false,last=null,soundOn=true;
 let maskIdx=[],maskTotal=0,checkTimer=null;
 
 const SVG_SOUND_ON='<svg class="ic" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
@@ -354,7 +345,9 @@ function makeRainbow(ctx,w,h){
   return g;
 }
 
-
+/* ---------------- artwork ----------------
+   mode: 'bottom' | 'chalk' | 'chalkDecor' | 'thumb' | 'mask'
+   Main drawing only. Border decor is drawn but NEVER in the mask. */
 function drawLevel(ctx,id,mode,w,h){
   const rainbow=makeRainbow(ctx,w,h);
   ctx.save();
@@ -375,13 +368,6 @@ function drawLevel(ctx,id,mode,w,h){
     else if(mode==='mask'){ctx.shadowBlur=0;ctx.strokeStyle='#fff';ctx.lineWidth=16;ctx.stroke();}
     else{ctx.stroke();}
   }
-  function star5(x,y,r){
-    ctx.beginPath();
-    for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*0.5:r;
-      const px=x+Math.cos(a)*rr,py=y+Math.sin(a)*rr;
-      i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
-    ctx.closePath();
-  }
   function hex(x,y,r){
     ctx.beginPath();
     for(let i=0;i<6;i++){const a=i*TAU/6,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;
@@ -401,17 +387,10 @@ function drawLevel(ctx,id,mode,w,h){
       ctx.moveTo(x+Math.cos(a)*r*1.3,y+Math.sin(a)*r*1.3);
       ctx.lineTo(x+Math.cos(a)*r*1.7,y+Math.sin(a)*r*1.7);lp(4);}
   }
-  function grass(x0,y,n){
-    for(let i=0;i<n;i++){
-      ctx.beginPath();
-      ctx.moveTo(w*(x0+i*.04),h*y);
-      ctx.quadraticCurveTo(w*(x0+.01+i*.04),h*(y-.08),w*(x0+.02+i*.04),h*(y-.02));
-      lp(3);}
-  }
 
-  const showArt=(mode!=='chalkDecor');   
+  const showArt=(mode!=='chalkDecor');
   if(showArt){
-  if(id===0){ 
+  if(id===0){ /* FISH — only the fish */
     ctx.beginPath();ctx.ellipse(w*.44,h*.52,w*.20,h*.17,0,0,TAU);fp();
     ctx.beginPath();ctx.moveTo(w*.60,h*.52);ctx.lineTo(w*.80,h*.36);ctx.lineTo(w*.80,h*.68);ctx.closePath();fp();
     ctx.beginPath();ctx.moveTo(w*.36,h*.38);ctx.quadraticCurveTo(w*.44,h*.25,w*.56,h*.37);ctx.closePath();fp();
@@ -425,14 +404,8 @@ function drawLevel(ctx,id,mode,w,h){
     else if(mode==='mask'){ctx.fillStyle='#fff';ctx.fill();}
     else ctx.stroke();
     ctx.beginPath();ctx.arc(w*.30,h*.56,w*.05,0.3,1.4);lp(4);
-    [[.16,.28,7],[.21,.20,5],[.12,.16,4]].forEach(b=>{ctx.beginPath();ctx.arc(w*b[0],h*b[1],b[2],0,TAU);lp(4);});
-    ctx.beginPath();ctx.moveTo(w*.10,h*.86);ctx.quadraticCurveTo(w*.14,h*.78,w*.10,h*.70);
-    ctx.quadraticCurveTo(w*.06,h*.62,w*.10,h*.55);lp(6);
-    star5(w*.72,h*.82,w*.035);fp();
-    ctx.beginPath();ctx.moveTo(w*.12,h*.90);ctx.quadraticCurveTo(w*.3,h*.86,w*.55,h*.90);
-    ctx.quadraticCurveTo(w*.75,h*.93,w*.88,h*.89);lp(5);
   }
-  else if(id===1){ 
+  else if(id===1){ /* BUTTERFLY */
     ctx.beginPath();ctx.ellipse(w*.33,h*.36,w*.14,h*.12,-0.5,0,TAU);fp();
     ctx.beginPath();ctx.ellipse(w*.67,h*.36,w*.14,h*.12,0.5,0,TAU);fp();
     ctx.beginPath();ctx.ellipse(w*.36,h*.62,w*.10,h*.09,0.45,0,TAU);fp();
@@ -447,7 +420,7 @@ function drawLevel(ctx,id,mode,w,h){
     ctx.beginPath();ctx.arc(w*.58,h*.22,w*.012,0,TAU);fp();
     [[.30,.34,6],[.70,.34,6],[.36,.62,4],[.64,.62,4]].forEach(d=>{ctx.beginPath();ctx.arc(w*d[0],h*d[1],d[2],0,TAU);lp(4);});
   }
-  else if(id===2){ 
+  else if(id===2){ /* FLOWER — only the flower */
     for(let i=0;i<6;i++){const a=i*Math.PI/3;
       ctx.beginPath();
       ctx.ellipse(w*(0.5+0.13*Math.cos(a)),h*(0.34+0.13*Math.sin(a)),w*.055,h*.085,a,0,TAU);fp();}
@@ -456,30 +429,16 @@ function drawLevel(ctx,id,mode,w,h){
     ctx.beginPath();ctx.moveTo(w*.5,h*.47);ctx.quadraticCurveTo(w*.48,h*.65,w*.5,h*.82);lp(8);
     ctx.beginPath();ctx.ellipse(w*.42,h*.66,w*.06,h*.028,-0.6,0,TAU);fp();
     ctx.beginPath();ctx.ellipse(w*.58,h*.72,w*.06,h*.028,0.6,0,TAU);fp();
-    flower(w*.75,h*.66,w*.03,5,0.4);
-    ctx.beginPath();ctx.moveTo(w*.75,h*.71);ctx.quadraticCurveTo(w*.77,h*.78,w*.75,h*.85);lp(5);
-    grass(.2,.88,5);
-    ctx.beginPath();ctx.ellipse(w*.26,h*.60,w*.035,h*.025,0.3,0,TAU);fp();
-    ctx.beginPath();ctx.moveTo(w*.25,h*.58);ctx.lineTo(w*.27,h*.625);lp(3);
-    ctx.beginPath();ctx.ellipse(w*.245,h*.555,w*.02,h*.012,-0.5,0,TAU);fp();
   }
-  else if(id===3){ 
+  else if(id===3){ /* HEART — only the heart */
     const cx=w*.5,cy=h*.47,s=w*.15;
     ctx.beginPath();
     ctx.moveTo(cx,cy+s*1.1);
     ctx.bezierCurveTo(cx-s*1.5,cy+s*0.1,cx-s*1.1,cy-s*1.0,cx,cy-s*0.35);
     ctx.bezierCurveTo(cx+s*1.1,cy-s*1.0,cx+s*1.5,cy+s*0.1,cx,cy+s*1.1);
     ctx.closePath();fp();
-    ctx.beginPath();ctx.arc(cx-s*0.45,cy-s*0.35,s*0.35,Math.PI*0.9,Math.PI*1.5);lp(5);
-    ctx.beginPath();ctx.moveTo(w*.30,h*.26);ctx.lineTo(w*.64,h*.60);lp(6);
-    ctx.beginPath();ctx.moveTo(w*.68,h*.64);ctx.lineTo(w*.58,h*.62);ctx.lineTo(w*.64,h*.54);ctx.closePath();fp();
-    ctx.beginPath();ctx.moveTo(w*.30,h*.26);ctx.lineTo(w*.26,h*.32);ctx.moveTo(w*.34,h*.24);ctx.lineTo(w*.30,h*.30);lp(4);
-    const mh=(x,y,ss)=>{ctx.beginPath();ctx.moveTo(x,y+ss*1.1);
-      ctx.bezierCurveTo(x-ss*1.5,y+ss*0.1,x-ss*1.1,y-ss,x,x-ss*0.35);
-      ctx.bezierCurveTo(x+ss*1.1,y-ss,x+ss*1.5,y+ss*0.1,x,y+ss*1.1);ctx.closePath();fp();};
-    mh(w*.24,h*.68,w*.03);mh(w*.76,h*.30,w*.03);
   }
-  else if(id===4){ 
+  else if(id===4){ /* ROCKET — rocket + flame only */
     ctx.beginPath();
     ctx.moveTo(w*.5,h*.16);
     ctx.quadraticCurveTo(w*.64,h*.34,w*.61,h*.60);
@@ -493,17 +452,8 @@ function drawLevel(ctx,id,mode,w,h){
     ctx.beginPath();ctx.moveTo(w*.61,h*.48);ctx.lineTo(w*.72,h*.70);ctx.lineTo(w*.61,h*.66);ctx.closePath();fp();
     ctx.beginPath();ctx.moveTo(w*.44,h*.62);ctx.lineTo(w*.47,h*.72);ctx.lineTo(w*.5,h*.66);
     ctx.lineTo(w*.53,h*.74);ctx.lineTo(w*.56,h*.62);lp(6);
-    ctx.beginPath();ctx.moveTo(w*.42,h*.78);ctx.lineTo(w*.42,h*.84);lp(4);
-    ctx.beginPath();ctx.moveTo(w*.5,h*.80);ctx.lineTo(w*.5,h*.88);lp(4);
-    ctx.beginPath();ctx.moveTo(w*.58,h*.78);ctx.lineTo(w*.58,h*.84);lp(4);
-    ctx.beginPath();ctx.arc(w*.2,h*.78,w*.045,0,TAU);fp();
-    ctx.beginPath();ctx.ellipse(w*.2,h*.78,w*.075,h*.02,-0.4,0,TAU);lp(4);
-    ctx.beginPath();
-    ctx.arc(w*.8,h*.24,w*.05,Math.PI*0.5,Math.PI*1.5);
-    ctx.arc(w*.82,h*.24,w*.035,Math.PI*1.5,Math.PI*0.5,true);
-    ctx.closePath();fp();
   }
-  else if(id===5){ 
+  else if(id===5){ /* CAT — only the cat */
     ctx.beginPath();ctx.ellipse(w*.5,h*.74,w*.13,h*.09,0,0,TAU);fp();
     ctx.beginPath();ctx.moveTo(w*.62,h*.76);ctx.quadraticCurveTo(w*.75,h*.74,w*.74,h*.62);lp(8);
     ctx.beginPath();ctx.ellipse(w*.45,h*.81,w*.03,h*.015,0,0,TAU);fp();
@@ -521,31 +471,15 @@ function drawLevel(ctx,id,mode,w,h){
     ctx.beginPath();ctx.moveTo(w*.46,h*.31);ctx.lineTo(w*.47,h*.36);lp(4);
     ctx.beginPath();ctx.moveTo(w*.54,h*.31);ctx.lineTo(w*.53,h*.36);lp(4);
     ctx.beginPath();ctx.moveTo(w*.42,h*.63);ctx.quadraticCurveTo(w*.5,h*.67,w*.58,h*.63);lp(5);
-    ctx.beginPath();ctx.arc(w*.24,h*.78,w*.04,0,TAU);fp();
-    ctx.beginPath();ctx.arc(w*.24,h*.78,w*.028,0.5,2.5);lp(3);
-    ctx.beginPath();ctx.moveTo(w*.28,h*.78);ctx.quadraticCurveTo(w*.36,h*.82,w*.42,h*.80);lp(3);
   }
-  else if(id===6){ 
-    sun(w*.14,h*.16,w*.045);
-    ctx.beginPath();ctx.ellipse(w*.7,h*.14,w*.07,h*.025,0,0,TAU);fp();
-    ctx.beginPath();ctx.ellipse(w*.78,h*.11,w*.05,h*.02,0,0,TAU);fp();
-    ctx.beginPath();ctx.moveTo(w*.4,h*.22);ctx.quadraticCurveTo(w*.43,h*.18,w*.46,h*.22);
-    ctx.quadraticCurveTo(w*.49,h*.18,w*.52,h*.22);lp(3);
+  else if(id===6){ /* SAILBOAT — only the boat */
     ctx.beginPath();ctx.moveTo(w*.3,h*.62);ctx.lineTo(w*.7,h*.62);ctx.lineTo(w*.62,h*.74);ctx.lineTo(w*.36,h*.74);ctx.closePath();fp();
     ctx.beginPath();ctx.moveTo(w*.5,h*.62);ctx.lineTo(w*.5,h*.26);lp(6);
     ctx.beginPath();ctx.moveTo(w*.52,h*.28);ctx.lineTo(w*.52,h*.58);ctx.lineTo(w*.68,h*.58);ctx.closePath();fp();
     ctx.beginPath();ctx.moveTo(w*.48,h*.32);ctx.lineTo(w*.48,h*.58);ctx.lineTo(w*.34,h*.58);ctx.closePath();fp();
     ctx.beginPath();ctx.moveTo(w*.5,h*.26);ctx.lineTo(w*.58,h*.22);ctx.lineTo(w*.5,h*.19);ctx.closePath();fp();
-    for(let i=0;i<3;i++){
-      ctx.beginPath();ctx.moveTo(w*(.15+i*.04),h*(.82+i*.04));
-      for(let x=0;x<4;x++){
-        ctx.quadraticCurveTo(w*(.25+i*.04+x*.2),h*(.78+i*.04),w*(.35+i*.04+x*.2),h*(.82+i*.04));}
-      lp(4);}
   }
-  else if(id===7){ 
-    ctx.beginPath();ctx.moveTo(w*.2,h*.82);ctx.quadraticCurveTo(w*.5,h*.78,w*.8,h*.82);lp(8);
-    ctx.beginPath();ctx.ellipse(w*.26,h*.80,w*.03,h*.014,-0.5,0,TAU);fp();
-    ctx.beginPath();ctx.ellipse(w*.74,h*.80,w*.03,h*.014,0.5,0,TAU);fp();
+  else if(id===7){ /* OWL — only the owl */
     ctx.beginPath();ctx.ellipse(w*.5,h*.55,w*.16,h*.22,0,0,TAU);fp();
     ctx.beginPath();ctx.moveTo(w*.40,h*.38);ctx.lineTo(w*.36,h*.26);ctx.lineTo(w*.46,h*.33);ctx.closePath();fp();
     ctx.beginPath();ctx.moveTo(w*.60,h*.38);ctx.lineTo(w*.64,h*.26);ctx.lineTo(w*.54,h*.33);ctx.closePath();fp();
@@ -558,12 +492,8 @@ function drawLevel(ctx,id,mode,w,h){
       ctx.beginPath();ctx.arc(w*(.44+c*.06),h*(.60+r*.05),w*.02,0.15*Math.PI,0.85*Math.PI);lp(3);}
     ctx.beginPath();ctx.moveTo(w*.36,h*.48);ctx.quadraticCurveTo(w*.30,h*.60,w*.37,h*.70);lp(5);
     ctx.beginPath();ctx.moveTo(w*.64,h*.48);ctx.quadraticCurveTo(w*.70,h*.60,w*.63,h*.70);lp(5);
-    ctx.beginPath();
-    ctx.arc(w*.82,h*.18,w*.04,Math.PI*0.5,Math.PI*1.5);
-    ctx.arc(w*.84,h*.18,w*.028,Math.PI*1.5,Math.PI*0.5,true);
-    ctx.closePath();fp();
   }
-  else if(id===8){ 
+  else if(id===8){ /* TURTLE — only the turtle */
     ctx.beginPath();ctx.arc(w*.48,h*.55,w*.20,Math.PI,TAU);ctx.closePath();fp();
     ctx.beginPath();ctx.ellipse(w*.48,h*.56,w*.22,h*.045,0,0,TAU);fp();
     hex(w*.48,h*.45,w*.06);fp();
@@ -576,11 +506,8 @@ function drawLevel(ctx,id,mode,w,h){
     ctx.beginPath();ctx.ellipse(w*.36,h*.64,w*.045,h*.03,0.5,0,TAU);fp();
     ctx.beginPath();ctx.ellipse(w*.60,h*.64,w*.045,h*.03,-0.5,0,TAU);fp();
     ctx.beginPath();ctx.moveTo(w*.28,h*.56);ctx.lineTo(w*.22,h*.60);ctx.lineTo(w*.29,h*.62);ctx.closePath();fp();
-    ctx.beginPath();ctx.moveTo(w*.14,h*.72);ctx.lineTo(w*.86,h*.72);lp(5);
-    grass(.66,.86,4);
-    flower(w*.2,h*.82,w*.025,5,0.3);
   }
-  else if(id===9){ 
+  else if(id===9){ /* HOUSE — house + sun + cloud + tree + smoke (no fence/ground lines) */
     sun(w*.85,h*.15,w*.045);
     ctx.beginPath();ctx.ellipse(w*.3,h*.12,w*.07,h*.025,0,0,TAU);fp();
     ctx.beginPath();ctx.rect(w*.32,h*.45,w*.36,h*.30);fp();
@@ -598,11 +525,8 @@ function drawLevel(ctx,id,mode,w,h){
     ctx.beginPath();ctx.arc(w*.195,h*.55,w*.05,0,TAU);fp();
     ctx.beginPath();ctx.arc(w*.16,h*.60,w*.035,0,TAU);fp();
     ctx.beginPath();ctx.arc(w*.23,h*.60,w*.035,0,TAU);fp();
-    ctx.beginPath();ctx.moveTo(w*.76,h*.70);ctx.lineTo(w*.92,h*.70);lp(4);
-    for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(w*(.78+i*.045),h*.74);ctx.lineTo(w*(.78+i*.045),h*.66);lp(4);}
-    ctx.beginPath();ctx.moveTo(w*.12,h*.78);ctx.lineTo(w*.88,h*.78);lp(5);
   }
-  else if(id===10){ 
+  else if(id===10){ /* JELLYFISH — only the jellyfish */
     ctx.beginPath();
     ctx.arc(w*.5,h*.45,w*.18,Math.PI,TAU);
     ctx.quadraticCurveTo(w*.62,h*.50,w*.56,h*.45);
@@ -617,11 +541,8 @@ function drawLevel(ctx,id,mode,w,h){
       ctx.quadraticCurveTo(x+w*.02,h*.58,x,h*.68);
       ctx.quadraticCurveTo(x-w*.02,h*.78,x,h*.85);
       lp(4);}
-    [[.72,.30,5],[.77,.22,4],[.25,.30,4],[.22,.22,3]].forEach(b=>{ctx.beginPath();ctx.arc(w*b[0],h*b[1],b[2],0,TAU);lp(3);});
-    star5(w*.8,h*.84,w*.03);fp();
   }
-  else if(id===11){ 
-    ctx.beginPath();ctx.moveTo(w*.15,h*.78);ctx.lineTo(w*.85,h*.78);lp(6);
+  else if(id===11){ /* SNAIL — only the snail */
     ctx.beginPath();
     ctx.moveTo(w*.72,h*.77);
     ctx.quadraticCurveTo(w*.60,h*.70,w*.45,h*.74);
@@ -640,12 +561,10 @@ function drawLevel(ctx,id,mode,w,h){
     ctx.beginPath();ctx.arc(w*.32,h*.42,w*.012,0,TAU);fp();
     ctx.beginPath();ctx.arc(w*.245,h*.62,w*.008,0,TAU);lp(3);
     ctx.beginPath();ctx.arc(w*.24,h*.66,w*.012,0.3,Math.PI-0.3);lp(3);
-    grass(.68,.86,4);
-    flower(w*.82,h*.80,w*.025,5,0.2);
   }
-  } 
+  } /* end showArt */
 
-  
+  /* border decoration: flowers, vines, sparkles — visible but NOT colorable */
   if(mode!=='mask'){
     const decorChalk=(mode==='chalk'||mode==='chalkDecor');
     if(decorChalk){ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=3;
@@ -679,7 +598,7 @@ function drawLevel(ctx,id,mode,w,h){
   ctx.restore();
 }
 
-
+/* ---------------- layers ---------------- */
 function drawBottom(){
   bctx.clearRect(0,0,W,H);
   bctx.fillStyle='#0a0a0f';bctx.fillRect(0,0,W,H);
@@ -717,7 +636,7 @@ function composite(){
   sctx.globalCompositeOperation='source-over';
 }
 
-
+/* ---------------- progress ---------------- */
 function checkProgress(){
   const d=ectx.getImageData(0,0,W,H).data;
   let hit=0;
@@ -725,17 +644,13 @@ function checkProgress(){
   const pct=maskTotal?Math.min(100,Math.round(100*hit/maskTotal)):0;
   document.getElementById('progressFill').style.width=pct+'%';
   document.getElementById('pct').textContent=pct+'%';
-  if(pct>=70&&!done){
-    done=true;
-    setTimeout(()=>{winEl.classList.remove('hide');tooth.classList.remove('show','scratch');},350);
-  }
 }
 function queueCheck(){
   if(checkTimer)return;
   checkTimer=setTimeout(()=>{checkTimer=null;checkProgress();},250);
 }
 
-
+/* ---------------- scratching (clipped to the main drawing) ---------------- */
 function pt(e){
   const r=scratchC.getBoundingClientRect();
   return {x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};
@@ -780,7 +695,7 @@ scratchC.addEventListener('pointermove',e=>{
   scratching=false;tooth.classList.remove('scratch');stopSound();
 }));
 
-
+/* ---------------- toothpick cursor ---------------- */
 function moveTooth(e){
   if(settings.notooth){ tooth.classList.remove('show'); return; }
   const r=stack.getBoundingClientRect();
@@ -789,7 +704,7 @@ function moveTooth(e){
 }
 stack.addEventListener('pointerleave',()=>{if(!scratching)tooth.classList.remove('show');});
 
-
+/* ---------------- sound ---------------- */
 let actx=null,noiseGain=null,bp=null;
 function ensureAudio(){
   if(actx)return;
@@ -821,7 +736,7 @@ function updateSoundIcons(){
 }
 function toggleSound(){soundOn=!soundOn;if(!soundOn)stopSound();updateSoundIcons();}
 
-
+/* ---------------- tip size ---------------- */
 const sizeRange=document.getElementById('sizeRange');
 const sizeVal=document.getElementById('sizeVal');
 function setPx(v){
@@ -839,12 +754,11 @@ document.getElementById('tipSeg').querySelectorAll('button').forEach(b=>{
 });
 setPx(14);
 
-
+/* ---------------- flow ---------------- */
 const LEVELS=['Fish','Butterfly','Flower','Heart','Rocket','Cat',
               'Sailboat','Owl','Turtle','House','Jellyfish','Snail'];
 function loadLevel(i){
-  cur=i;done=false;
-  winEl.classList.add('hide');
+  cur=i;
   document.getElementById('progressFill').style.width='0%';
   document.getElementById('pct').textContent='0%';
   document.getElementById('levelTitle').textContent='Level '+(i+1)+': '+LEVELS[i];
@@ -853,9 +767,9 @@ function loadLevel(i){
   composite();
 }
 function showGame(){menuEl.classList.add('hide');gameEl.classList.remove('hide');}
-function showMenu(){gameEl.classList.add('hide');winEl.classList.add('hide');menuEl.classList.remove('hide');}
+function showMenu(){gameEl.classList.add('hide');menuEl.classList.remove('hide');}
 
-
+/* ---------------- menu build ---------------- */
 const track=document.getElementById('track');
 const segsEl=document.getElementById('segs');
 const PAGES=LEVELS.length/2;
@@ -898,12 +812,9 @@ document.getElementById('prevBtn').onclick=()=>goStep(-1);
 document.getElementById('nextBtn').onclick=()=>goStep(1);
 updateNav();
 
-
+/* ---------------- buttons & modals ---------------- */
 document.getElementById('backBtn').onclick=showMenu;
-document.getElementById('menuBtn').onclick=showMenu;
 document.getElementById('resetBtn').onclick=()=>loadLevel(cur);
-document.getElementById('replayBtn').onclick=()=>loadLevel(cur);
-document.getElementById('nextLevelBtn').onclick=()=>loadLevel((cur+1)%LEVELS.length);
 document.getElementById('mSound').onclick=toggleSound;
 document.getElementById('gSound').onclick=toggleSound;
 document.getElementById('mSettings').onclick=()=>setEl.classList.remove('hide');
